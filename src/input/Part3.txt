@@ -1,0 +1,21 @@
+
+
+    @Test
+    @PactVerification()
+    public void doTest() throws IOException {
+        System.setProperty("pact.rootDir","../pacts");
+        HttpPost httpPost = null;
+        HttpClient httpClient = new DefaultHttpClient();
+        String url=String.format(providerUrl_POST_Booking);
+        System.out.println("using url: "+url);
+        HttpEntity httpEntity = new StringEntity((postbody), "utf-8");
+        httpPost = new HttpPost(url);
+        httpPost.setHeader("Content-type", "application/json; charset=utf-8");
+        httpPost.setEntity(httpEntity);
+        System.out.println("postbody :" + postbody);
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+        System.out.println("Response : "+httpResponse);
+        System.out.println("Post : "+httpPost);
+    }
+
+}

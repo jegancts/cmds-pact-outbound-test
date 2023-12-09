@@ -1,0 +1,9 @@
+    @Rule
+    public PactProviderRuleMk2 provider = new PactProviderRuleMk2(providerServiceName, "localhost", providerServicePort, this);
+
+    @Pact(consumer = consumerServiceName)
+    public RequestResponsePact createPact(PactDslWithProvider builder) {
+        Map<String, String> headers = new HashMap();
+        headers.put("Content-Type", "application/json; charset=utf-8");
+
+        DslPart reqBody = new PactDslJsonBody()

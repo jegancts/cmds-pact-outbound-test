@@ -1,0 +1,162 @@
+import au.com.dius.pact.consumer.Pact;
+import au.com.dius.pact.consumer.PactProviderRuleMk2;
+import au.com.dius.pact.consumer.PactVerification;
+import au.com.dius.pact.consumer.dsl.DslPart;
+import au.com.dius.pact.consumer.dsl.PactDslJsonBody;
+import au.com.dius.pact.consumer.dsl.PactDslWithProvider;
+import au.com.dius.pact.model.RequestResponsePact;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.junit.Rule;
+import org.junit.Test;
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+ 
+public class Int38_OrsToBooking_PostTest  {
+ 
+public static final String providerServiceName = "Int38a_Ors_Provider_Post";
+public static final String consumerServiceName = "Int38a_Booking_Consumer_Post";
+public static int providerServicePort = 8110;
+public static String providerUrl_POST_Booking = "http://localhost:" + providerServicePort + "/booking";
+public String postbody = new String(Files.readAllBytes(Paths.get("src/Resources/Input_Int38_BookingToOrs_Post.txt")), StandardCharsets.UTF_8);
+public Int38_OrsToBooking_PostTest() throws IOException {   }
+    @Rule
+    public PactProviderRuleMk2 provider = new PactProviderRuleMk2(providerServiceName, "localhost", providerServicePort, this);
+
+    @Pact(consumer = consumerServiceName)
+    public RequestResponsePact createPact(PactDslWithProvider builder) {
+        Map<String, String> headers = new HashMap();
+        headers.put("Content-Type", "application/json; charset=utf-8");
+
+        DslPart reqBody = new PactDslJsonBody()
+          .stringType("parentLocationId", "655fec21-3955-43ef-99e0-04adff49b5cc")
+          .stringType("testCentreId", "BB002")
+          .numberType("offlineTesting", false)
+          .array("addresses")
+          .object()
+          .stringType("zipPostcode", "SW1A 2BN")
+          .stringType("city", "London")
+          .stringType("addressType", "PHYSICAL")
+          .stringType("address2Line", "London SW1A 2BN  United Kingdom")
+          .stringType("countryCode", "GBR")
+          .stringType("address1Line", "10 Spring Gardens")
+          .stringType("stateProvince", "505adc90-dd59-40aa-a1fc-50aacebb7ff0")
+          .closeObject()
+          .object()
+          .stringType("zipPostcode", "SW1A 2BN")
+          .stringType("city", "London")
+          .stringType("addressType", "POSTAL")
+          .stringType("address2Line", "London SW1A 2BN  United Kingdom")
+          .stringType("countryCode", "GBR")
+          .stringType("address1Line", "10 Spring Gardens")
+          .stringType("stateProvince", "505adc90-dd59-40aa-a1fc-50aacebb7ff0")
+          .closeObject()
+          .closeArray()
+          .stringType("locationName", "IELTS At Home BC")
+          .stringType("partnerCode", "BC")
+          .stringType("approverNotes", "Approved")
+          .stringType("locationType", "TEST_CENTRE")
+          .array("approvedProducts")
+          .object()
+          .stringType("authorisedStartTime", "2020-07-01T00,00,00.000Z")
+          .stringType("productId", "637f8e1b-0931-4184-9fed-37bc9fdb53d5")
+          .stringType("authorisedBy", "Operations User")
+          .closeObject()
+          .closeArray()
+          .stringType("localTimezone", "UTC")
+          .stringType("requestNotes", "Request to add new test centre for partner BC")
+          .stringType("externalReferenceId", "7bb7253d-36d3-4823-ba40-7c34b322252b")
+          .stringType("locationStatus", "ACTIVE")
+          .stringType("administratorId", "429187f5-38ed-4e86-b311-050ffe394f81")
+          .stringType("locationId", "1c3ae63b-b227-4a2e-a4f4-ded77cde87a5")
+          .stringType("approvedTime", "2020-07-01T00,00,00.000Z")
+          .stringType("requestStatus", "APPROVED")
+          .asBody();
+  DslPart resBody = new PactDslJsonBody()
+          .stringType("parentLocationId", "655fec21-3955-43ef-99e0-04adff49b5cc")
+          .stringType("testCentreId", "BB002")
+          .numberType("offlineTesting", false)
+          .array("addresses")
+          .object()
+          .stringType("zipPostcode", "SW1A 2BN")
+          .stringType("city", "London")
+          .stringType("addressType", "PHYSICAL")
+          .stringType("address2Line", "London SW1A 2BN  United Kingdom")
+          .stringType("countryCode", "GBR")
+          .stringType("address1Line", "10 Spring Gardens")
+          .stringType("stateProvince", "505adc90-dd59-40aa-a1fc-50aacebb7ff0")
+          .closeObject()
+          .object()
+          .stringType("zipPostcode", "SW1A 2BN")
+          .stringType("city", "London")
+          .stringType("addressType", "POSTAL")
+          .stringType("address2Line", "London SW1A 2BN  United Kingdom")
+          .stringType("countryCode", "GBR")
+          .stringType("address1Line", "10 Spring Gardens")
+          .stringType("stateProvince", "505adc90-dd59-40aa-a1fc-50aacebb7ff0")
+          .closeObject()
+          .closeArray()
+          .stringType("locationName", "IELTS At Home BC")
+          .stringType("partnerCode", "BC")
+          .stringType("approverNotes", "Approved")
+          .stringType("locationType", "TEST_CENTRE")
+          .array("approvedProducts")
+          .object()
+          .stringType("authorisedStartTime", "2020-07-01T00,00,00.000Z")
+          .stringType("productId", "637f8e1b-0931-4184-9fed-37bc9fdb53d5")
+          .stringType("authorisedBy", "Operations User")
+          .closeObject()
+          .closeArray()
+          .stringType("localTimezone", "UTC")
+          .stringType("requestNotes", "Request to add new test centre for partner BC")
+          .stringType("externalReferenceId", "7bb7253d-36d3-4823-ba40-7c34b322252b")
+          .stringType("locationStatus", "ACTIVE")
+          .stringType("administratorId", "429187f5-38ed-4e86-b311-050ffe394f81")
+          .stringType("locationId", "1c3ae63b-b227-4a2e-a4f4-ded77cde87a5")
+          .stringType("approvedTime", "2020-07-01T00,00,00.000Z")
+          .stringType("requestStatus", "APPROVED")
+          .asBody();
+  
+    return builder
+             .given("Booking publishes the Newly created Booking details to Ors")
+             .uponReceiving("Ors sends acknowledgement for new Booking")
+             .method("POST")
+             .headers(headers)
+             .body(reqBody)
+             .path("/booking")
+             .willRespondWith()
+             .status(202)
+             .headers(headers)
+             .body(resBody)
+             .toPact();
+            }
+
+
+    @Test
+    @PactVerification()
+    public void doTest() throws IOException {
+        System.setProperty("pact.rootDir","../pacts");
+        HttpPost httpPost = null;
+        HttpClient httpClient = new DefaultHttpClient();
+        String url=String.format(providerUrl_POST_Booking);
+        System.out.println("using url: "+url);
+        HttpEntity httpEntity = new StringEntity((postbody), "utf-8");
+        httpPost = new HttpPost(url);
+        httpPost.setHeader("Content-type", "application/json; charset=utf-8");
+        httpPost.setEntity(httpEntity);
+        System.out.println("postbody :" + postbody);
+        HttpResponse httpResponse = httpClient.execute(httpPost);
+        System.out.println("Response : "+httpResponse);
+        System.out.println("Post : "+httpPost);
+    }
+
+}

@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com</groupId>
+	<artifactId>cmds-pact-outbound-test</artifactId>
+	<packaging>jar</packaging>
+	<version>1.0</version>
+
+	<properties>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+	</properties>
+	
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.amazonaws</groupId>
+				<artifactId>aws-java-sdk-bom</artifactId>
+				<version>1.11.741</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
+	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>fluent-hc</artifactId>
+			<version>4.5.1</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/au.com.dius/pact-jvm-consumer-junit -->
+		<dependency>
+			<groupId>au.com.dius</groupId>
+			<artifactId>pact-jvm-consumer-junit_2.12</artifactId>
+			<version>3.5.24</version>
+			<scope>test</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.json/json -->
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20171018</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>5.2.4.RELEASE</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>io.rest-assured</groupId>
+			<artifactId>rest-assured</artifactId>
+			<version>4.1.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-s3</artifactId>
+			<version>1.12.353</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-core -->
+		<dependency>
+			<groupId>com.amazonaws</groupId>
+			<artifactId>aws-java-sdk-core</artifactId>
+			<version>1.12.353</version>
+		</dependency>
+	</dependencies>
+	
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>au.com.dius.pact.provider</groupId>
+				<artifactId>maven</artifactId>
+				<version>4.3.15</version>
+				
+				<configuration>
+				
+					<!-- mvn pact:publish -->
+					<pactDirectory>target/pacts</pactDirectory>
+					<pactBrokerUrl>${env.PACT_BROKER_URL}</pactBrokerUrl>
+					<pactBrokerUsername>${env.PACT_USERNAME}</pactBrokerUsername>
+					<pactBrokerPassword>${env.PACT_PASSWORD}</pactBrokerPassword>
+					<projectVersion>${env.PIPELINE_ID}</projectVersion> <!-- Defaults to ${project.version} -->
+					<trimSnapshot>false</trimSnapshot> <!-- Defaults to false -->
+
+					<!-- mvn pact:verify -->
+					<serviceProviders>
+						<!-- You can define as many as you need, but each must have a unique name -->
+						
+			<!-- 			<serviceProvider>
+							<name>Create_Booking_CMDS_Booking_BC_Provider</name>
+							<protocol>https</protocol>
+							<host>api.${env.ENVIRONMENT}.cmdsiz.com</host>
+							<port>443</port>
+							<path>/</path>
+							<pactBroker>
+								<url>${env.PACT_BROKER_URL}</url>
+								<authentication>
+									<username>${env.PACT_USERNAME}</username>
+									<password>${env.PACT_PASSWORD}</password>
+								</authentication>
+							</pactBroker>
+						</serviceProvider>
+						
+			-->
+						
+						
+						
+					</serviceProviders>
+					<systemPropertyVariables>
+						<pact.verifier.publishResults>true</pact.verifier.publishResults>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>3.0.0-M7</version>
+				<configuration>
+					<systemPropertyVariables>
+						<pact.verifier.publishResults>true</pact.verifier.publishResults>
+					</systemPropertyVariables>
+					<groups>${test.env}</groups>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
